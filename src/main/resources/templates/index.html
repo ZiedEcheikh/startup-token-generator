@@ -6,19 +6,52 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Startup Tokenator OIDC</title>
         <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" th:href="@{/assets/img/favicon.ico}"/>
-        <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.css" th:href="@{/webjars/bootstrap/css/bootstrap.css}" />
         <link th:href="@{/assets/css/style.css}" rel="stylesheet">
+        <link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet">
+        <script type="text/javascript" th:src="@{/assets/js/bootstrap.min.js}"  ></script>
+
     </head>
     <body>
-        <div class="container">
-            <div class="page-header">
-                <h1>Startup Tokenator OIDC</h1>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark"  data-bs-theme="dark">
+        <div class="container-fluid">
+            <span class="badge text-bg-light fs-2">Tokenator</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item active">
+                        <a  th:href="@{/index}" class="nav-link" aria-current="page" style="color: rgba(255, 255, 255, .5)" >Home</a>
+                    </li>
+                    <li th:if="${isAuthenticated == true}" class="nav-item">
+                        <a th:href="@{/oidc}" class="nav-link" aria-current="page" style="color:#fff">Credentials</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <a th:if="${isAuthenticated == false}" th:href="@{http://localhost:8080/oauth2/authorize?response_type=code&client_id=oidc-client&scope=message.read+message.write&state=12345678&redirect_uri=http://localhost:8383/authorized/oidc-client}">
+                        <button type="button" class="btn btn-warning px-3 me-2">Login</button>
+                    </a>
+                    <a th:if="${isAuthenticated == true}" th:href="@{/oidc}">
+                        <button type="button" class="btn btn-danger px-3 me-2">Logo Out</button>
+                    </a>
+                </div>
             </div>
-            <div>&nbsp;</div>
-            <ul>
-                <li><a th:href="@{/oidc}">OIDC</a></li>
-            </ul>
         </div>
-        <br />
+    </nav>
+    <div class="container">
+            <div class="page-info">
+                <div class="content-info">
+                    <h2>Startup Tokenator OIDC</h2>
+                    <div>
+                        <h5> This tool allow to you :</h5>
+                        <ul>
+                            <li>Display OIDC Metadata</li>
+                            <li>Login and display your credentials</li>
+                            <li>Fetch a full JWT</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    </div>
     </body>
 </html>

@@ -1,28 +1,89 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Getting Started with Spring Authorization Server</title>
-        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" th:href="@{/assets/img/favicon.ico}"/>
-        <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.css" th:href="@{/webjars/bootstrap/css/bootstrap.css}" />
-        <link th:href="@{/assets/css/style.css}" rel="stylesheet">
-    </head>
-    <body>
-        <div th:replace="templates::header"></div>
-        <div class="container">
-            <div class="page-header">
-                <div th:replace="templates::github-link"></div>
-                <h1>Spring Authorization Server <small>#SpringOne</small></h1>
-            </div>
-            <div>&nbsp;</div>
-            <div>
-                <p>The following is a totally harmless link:</p>
-                <a class="btn btn-primary" href="http://localhost:8080/oauth2/authorize?response_type=code&client_id=oidc-client&scope=message.read+message.write&state=12345678&redirect_uri=http://localhost:8383/authorized/oidc-client">Please Log In</a>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Startup Tokenator OIDC</title>
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" th:href="@{/assets/img/favicon.ico}"/>
+    <link th:href="@{/assets/css/style.css}" rel="stylesheet">
+    <link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/assets/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/assets/js/clipboard.min.js}"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark" data-bs-theme="dark">
+    <div class="container-fluid">
+        <span class="badge text-bg-light fs-2">Tokenator</span>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item active">
+                    <a  th:href="@{/index}" class="nav-link" aria-current="page" style="color: rgba(255, 255, 255, .5)" >Home</a>
+                </li>
+                <li th:if="${isAuthenticated == true}" class="nav-item">
+                    <a th:href="@{/oidc}" class="nav-link" aria-current="page" style="color:#fff">Credentials</a>
+                </li>
+            </ul>
+            <div class="d-flex align-items-center">
+                <a th:if="${isAuthenticated == false}" th:href="@{/oidc}">
+                    <button type="button" class="btn btn-warning px-3 me-2">Login</button>
+                </a>
+                <a th:if="${isAuthenticated == true}" th:href="@{/oidc}">
+                    <button type="button" class="btn btn-danger px-3 me-2">Logo Out</button>
+                </a>
             </div>
         </div>
-        <br />
-        <div th:replace="templates::footer"></div>
-    </body>
+    </div>
+</nav>
+<div class="container" style="margin-top:50px;">
+    <table class="table table-hover">
+        <tbody>
+        <tr>
+            <th class="center-in-td" scope="row">Scopes</th>
+            <td><code class="break-all"><span th:text="${scopes}"></span></code></td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <th class="center-in-td" scope="row">RefreshToken</th>
+            <td><code class="break-all" id="in01"><span th:text="${refreshToken}"></code></td>
+            <td class="center-in-td"><button id="btn01"
+                        class="btn btn-outline-primary"
+                             type="button"
+                             data-clipboard-demo=""
+                             data-clipboard-target="#in01"
+                             data-bs-toggle="tooltip"
+                             data-bs-placement="bottom"
+                             title="Copy to Clipboard">Copy</span></button>
+            </td>
+        </tr>
+        <tr>
+            <th class="center-in-td" scope="row">AccessToken</th>
+            <td><code class="break-all" id="in02"><span th:text="${accessToken}"></span></code></td>
+            <td class="center-in-td"><button id="btn02"
+                        class="btn btn-outline-primary center-in-td"
+                        type="button"
+                        data-clipboard-demo=""
+                        data-clipboard-target="#in02"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="bottom"
+                        title="Copy to Clipboard">Copy</button>
+            </td>
+        </tr>
+
+
+        </tbody>
+    </table>
+</div>
+
+<script>
+    let btn1 = document.getElementById('btn01');
+    let btn2 = document.getElementById('btn02');
+    let clipboard1 = new ClipboardJS(btn1);
+    let clipboard2 = new ClipboardJS(btn2);
+</script>
+</body>
 </html>

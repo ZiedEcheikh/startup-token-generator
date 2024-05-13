@@ -3,3 +3,6 @@ server:
 logging:
   level:
     org.springframework.security: trace
+spring:
+  thymeleaf:
+    cache: false
